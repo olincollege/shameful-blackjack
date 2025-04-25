@@ -91,12 +91,30 @@ class Cards:
         """
         Represents a card
         card: a string matching one of the keys in the self._deck: Valuesuit format
+        Returns: a string saying Value of Suit for the card
         """
+        label = card[0]
         suit = self._SUITS[card[len(card) - 1]]
         val = self._deck[card]
-        return val + " of " + suit
+        if label == "A":
+            label = "Ace"
+        if label == "K":
+            label = "King"
+        if label == "Q":
+            label = "Queen"
+        if label == "J":
+            label = "Jack"
+        if label == "1":
+            label = "10"
+        if val == (1, 11):
+            val = "either 1 or 11"
+        return label + " of " + suit + " with a value of " + str(val)
 
     def shuffle(self):
+        """
+        Shuffles the deck
+        Returns: the newly shuffled deck- a dictionary
+        """
         dictionary = self._deck
         keys = list(dictionary.keys())
         random.shuffle(keys)
@@ -105,4 +123,7 @@ class Cards:
 
     @property
     def available_deck(self):
+        """
+        Returns the available deck
+        """
         return self._available_deck
