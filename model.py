@@ -2,6 +2,8 @@
 Contains the model class and card class.
 """
 
+import random
+
 
 class Model:
     """
@@ -15,6 +17,8 @@ class Cards:
     """
     contains a dictionary with every card and its blackjack value.
     """
+
+    _SUITS = {"s": "spades", "c": "clubs", "h": "hearts", "d": "diamonds"}
 
     def __init__(self):
         """
@@ -75,3 +79,30 @@ class Cards:
             "Kh": 10,
         }
         self._available_deck = self._deck
+
+    def __repr__(self):
+        string = ""
+        for key, value in self._available_deck.items():
+            string += key + ", "
+        string = string[0 : len(string) - 2]
+        return string
+
+    def print_card(self, card):
+        """
+        Represents a card
+        card: a string matching one of the keys in the self._deck: Valuesuit format
+        """
+        suit = self._SUITS[card[len(card) - 1]]
+        val = self._deck[card]
+        return val + " of " + suit
+
+    def shuffle(self):
+        dictionary = self._deck
+        keys = list(dictionary.keys())
+        random.shuffle(keys)
+        self._available_deck = {key: dictionary[key] for key in keys}
+        return self._available_deck
+
+    @property
+    def available_deck(self):
+        return self._available_deck
