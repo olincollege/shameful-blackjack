@@ -11,6 +11,7 @@ def main():
     """
     runs the blackjack game from start to finish.
     """
+    view = View()
     print("Welcome to my table... Are you feeling lucky?")
     print("I'll show you the deck, so you can see there's been no tampering.")
     deck = Cards()
@@ -22,7 +23,13 @@ def main():
     deck.shuffle()
     list_deck = list(deck.available_deck.keys())
     card = list_deck[0]
-    print(deck.print_card(card))
+    print(view.print_card(deck, card))
+    hand = [
+        list_deck[0],
+        list_deck[1],
+        list_deck[2],
+    ]  # should become the deal method  at some point
+    print(view.show_cards(deck, hand))
 
 
 if __name__ == "__main__":
