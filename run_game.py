@@ -2,7 +2,9 @@
 runs da game
 """
 
-from model import Cards
+from model import Cards, Model
+from controller import Controller, Dealer
+from view import View
 
 
 def main():
@@ -25,3 +27,35 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+class OneHand:
+    """
+    Runs an individual hand of blackjack from start to finish
+    """
+
+    def deal_setup(self):
+        """
+        Deals two cards to the dealer and two cards to the player
+        """
+        #       model.deal
+        #       view.display_cards
+        #       model.check_for_ace
+        #       self.checks(card1, card2)
+        #       if control.ask_hit_or_stay:
+        #                  model.add_a_card()
+        #
+        pass
+
+    def checks(self, cards_in_hand, dealer_cards):
+        """
+        runs every checker function from the controller
+        """
+
+
+#       if cards_in_hand(0) == cards_in_hand(1):
+#           control.ask_double.down
+#       if sum(cards_in_hand) > 8 and if sum(cards_in_hand) < 12:
+#           control.ask_double_down
+#       if val(showing_dealer_card) = (1, 11)
+#           control.ask_insurance()
