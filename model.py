@@ -18,7 +18,7 @@ class Cards:
     contains a dictionary with every card and its blackjack value.
     """
 
-    _SUITS = {"s": "spades", "c": "clubs", "h": "hearts", "d": "diamonds"}
+    # _SUITS = {"s": "spades", "c": "clubs", "h": "hearts", "d": "diamonds"}
 
     def __init__(self):
         """
@@ -87,28 +87,28 @@ class Cards:
         string = string[0 : len(string) - 2]
         return string
 
-    def print_card(self, card):
-        """
-        Represents a card
-        card: a string matching one of the keys in the self._deck: Valuesuit format
-        Returns: a string saying Value of Suit for the card
-        """
-        label = card[0]
-        suit = self._SUITS[card[len(card) - 1]]
-        val = self._deck[card]
-        if label == "A":
-            label = "Ace"
-        if label == "K":
-            label = "King"
-        if label == "Q":
-            label = "Queen"
-        if label == "J":
-            label = "Jack"
-        if label == "1":
-            label = "10"
-        if val == (1, 11):
-            val = "either 1 or 11"
-        return label + " of " + suit + " with a value of " + str(val)
+    # def print_card(self, card):
+    #     """
+    #     Represents a card
+    #     card: a string matching one of the keys in the self._deck: Valuesuit format
+    #     Returns: a string saying Value of Suit for the card
+    #     """
+    #     label = card[0]
+    #     suit = self._SUITS[card[len(card) - 1]]
+    #     val = self._deck[card]
+    #     if label == "A":
+    #         label = "Ace"
+    #     if label == "K":
+    #         label = "King"
+    #     if label == "Q":
+    #         label = "Queen"
+    #     if label == "J":
+    #         label = "Jack"
+    #     if label == "1":
+    #         label = "10"
+    #     if val == (1, 11):
+    #         val = "either 1 or 11"
+    #     return label + " of " + suit + " with a value of " + str(val)
 
     def shuffle(self):
         """
@@ -127,3 +127,10 @@ class Cards:
         Returns the available deck
         """
         return self._available_deck
+
+    @property
+    def deck(self):
+        """
+        Returns the available deck
+        """
+        return self._deck
