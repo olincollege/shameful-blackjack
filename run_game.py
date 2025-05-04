@@ -15,13 +15,13 @@ def main():
     view = View()
     controller = Controller()
     print("Welcome to my table... Are you feeling lucky?")
-    print("I'll show you the deck, so you can see there's been no tampering.")
+    # print("I'll show you the deck, so you can see there's been no tampering.")
     deck = Cards()
-    print(deck)
-    print("Now, I'll shuffle the cards, and show you those too.")
-    deck.shuffle()
-    print(deck)
-    print("Ready to play? I'll shuffle the cards one final time.")
+    # print(deck)
+    # print("Now, I'll shuffle the cards, and show you those too.")
+    # deck.shuffle()
+    # print(deck)
+    # print("Ready to play? I'll shuffle the cards one final time.")
     deck.shuffle()
     list_deck = list(deck.available_deck.keys())
     # card = list_deck[0]
@@ -39,9 +39,9 @@ def main():
         model.un_double_score(model.check_score(deck, model.player_hand)),
     )
     while (
-        controller.ask_hit_or_stay()
-        and model.check_score(deck, model.player_hand)[0] < 21
+        model.check_score(deck, model.player_hand)[0] < 21
         and model.check_score(deck, model.player_hand)[1] < 21
+        and controller.ask_hit_or_stay()
     ):
         print("You hit, so you will be dealt another card")
         model.deal_player(list_deck, num_cards)
@@ -52,11 +52,8 @@ def main():
             "Your current score is",
             model.un_double_score(model.check_score(deck, model.player_hand)),
         )
-    print(
-        "Your current score is",
-        model.un_double_score(model.check_score(deck, model.player_hand)),
-    )
     print("Now, it's my turn.")
+    dealer_score = model.dealer_deal(list_deck, deck, num_cards)
 
 
 if __name__ == "__main__":

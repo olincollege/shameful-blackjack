@@ -44,7 +44,22 @@ class Model:
     def un_double_score(self, scores):
         if scores[0] == scores[1]:
             return scores[0]
+        if scores[1] > 21:
+            return scores[0]
         return scores
+
+    def dealer_deal(self, deck_list, deck, num):
+        while (
+            self.check_score(deck, self.dealer_hand)[0] <= 16
+            and self.check_score(deck, self.dealer_hand)[1] <= 16
+        ):
+            self.dealer_hand.append(deck_list[num])
+            num += 1
+        print(
+            "The dealer's final score is",
+            self.un_double_score(self.check_score(deck, self.dealer_hand)),
+        )
+        return self.un_double_score(self.check_score(deck, self.dealer_hand))
 
     # @property
     # def player_hand(self):
