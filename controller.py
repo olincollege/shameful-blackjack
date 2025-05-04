@@ -21,7 +21,7 @@ class Controller:
         error if the user doesn't input correctly.
         """
         try:
-            action = input("Would you like to hit or stay?\n(h/s)")
+            action = input("Would you like to hit or stay?\n(h/s) ")
             if action == "h" or action == "H":
                 return True
             elif action == "s" or action == "S":
@@ -39,7 +39,7 @@ class Controller:
         error if the user doesn't input correctly.
         """
         try:
-            action = input("Would you like to double down?\n(y/n)")
+            action = input("Would you like to double down?\n(y/n) ")
             if action == "y" or action == "Y":
                 return True
             if action == "N" or action == "n":
@@ -57,7 +57,7 @@ class Controller:
         error if the user doesn't input correctly.
         """
         try:
-            action = input("Would you like to split?\n(y/n)")
+            action = input("Would you like to split?\n(y/n) ")
             if action == "y" or action == "Y":
                 return True
             if action == "N" or action == "n":

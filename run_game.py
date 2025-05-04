@@ -11,7 +11,9 @@ def main():
     """
     runs the blackjack game from start to finish.
     """
+    model = Model()
     view = View()
+    controller = Controller()
     print("Welcome to my table... Are you feeling lucky?")
     print("I'll show you the deck, so you can see there's been no tampering.")
     deck = Cards()
@@ -19,17 +21,42 @@ def main():
     print("Now, I'll shuffle the cards, and show you those too.")
     deck.shuffle()
     print(deck)
-    print("Ready to play?")
+    print("Ready to play? I'll shuffle the cards one final time.")
     deck.shuffle()
     list_deck = list(deck.available_deck.keys())
-    card = list_deck[0]
-    print(view.print_card(deck, card))
-    hand = [
-        list_deck[0],
-        list_deck[1],
-        list_deck[2],
-    ]  # should become the deal method  at some point
-    print(view.show_cards(deck, hand))
+    # card = list_deck[0]
+    # print(view.print_card(deck, card))
+    num_cards = 0
+    model.deal_player(list_deck, num_cards)
+    # print(model.player_hand)
+    num_cards += 1
+    model.deal_player(list_deck, num_cards)
+    num_cards += 1
+    # print(model.player_hand)
+    print("Your cards are: ", view.show_cards(deck, model.player_hand))
+    print(
+        "Your current score is",
+        model.un_double_score(model.check_score(deck, model.player_hand)),
+    )
+    while (
+        controller.ask_hit_or_stay()
+        and model.check_score(deck, model.player_hand)[0] < 21
+        and model.check_score(deck, model.player_hand)[1] < 21
+    ):
+        print("You hit, so you will be dealt another card")
+        model.deal_player(list_deck, num_cards)
+        num_cards += 1
+        # print(model.player_hand)
+        print("Your cards are:", view.show_cards(deck, model.player_hand))
+        print(
+            "Your current score is",
+            model.un_double_score(model.check_score(deck, model.player_hand)),
+        )
+    print(
+        "Your current score is",
+        model.un_double_score(model.check_score(deck, model.player_hand)),
+    )
+    print("Now, it's my turn.")
 
 
 if __name__ == "__main__":

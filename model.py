@@ -10,7 +10,55 @@ class Model:
     Contains all of the data needed to run the game
     """
 
-    pass
+    def __init__(self):
+        self.player_hand = []
+        self.dealer_hand = []
+        self.player_bet = []
+        self.player_bankroll = []
+
+    def deal_player(self, deck, num):
+        """
+        deals one card to the player
+        """
+        self.player_hand.append(deck[num])
+
+    def deal_dealer(self, deck, num):
+        """
+        deals one card to the dealer
+        """
+        self.dealer_hand.append(deck[num])
+
+    def check_score(self, deck, hand):
+        total = 0
+        other_total = 0
+        for card in hand:
+            val = deck.deck[card]
+            if val == (1, 11):
+                total += val[0]
+                other_total += val[1]
+            else:
+                total += val
+                other_total += val
+        return total, other_total
+
+    def un_double_score(self, scores):
+        if scores[0] == scores[1]:
+            return scores[0]
+        return scores
+
+    # @property
+    # def player_hand(self):
+    #     """
+    #     Returns the available deck
+    #     """
+    #     return self.player_hand
+
+    # @property
+    # def dealer_hand(self):
+    #     """
+    #     Returns the available deck
+    #     """
+    #     return self.dealer_hand
 
 
 class Cards:
