@@ -3,8 +3,24 @@
 This is a blackjack game that runs from the terminal, taking user input.
 
 ## Running the Game
+Please make sure that you are connected to the internet, so that you can clone the repo!
 
-Download the repo and run the command `python run_game.py`
+### Python Related Requirements
+Requires Python 3.12 or above.
+
+### Setup
+
+1. Choose a directory to clone repo in
+`cd xx`, where xx is the name of the repo you want to clone our game into
+
+2. Clone the Repository
+`git clone https://github.com/olincollege/shameful-blackjack`
+Make sure you're in the directory "shameful-blackjack"
+
+3. Install all packages
+`pip install -r requirements.txt`
+
+4. Run `python run_game.py` to start!
 
 ## How to Play
 
@@ -18,8 +34,4 @@ If the player gets two cards that are the same (two 7s or two Jacks, for example
 If the player's original two cards total to 9, 10, or 11, the player can choose to double down. This means that they will be dealt one more card face down, and cannot get any more cards. This face down card is not revealed until all bets are settled at the end.
 If the player is dealt two fives, they can choose to split or double down.  
 After the player is done, the dealer reveals their second card. If they have blackjack, they will collect the bet from the player if the player has less than 21. If the dealer has less than 17, they must keep drawing until they have 17 or more.  
-Once all cards have been dealt and revealed, the bets are settled. If the dealer goes bust, they pay the original bet to the player if the player stood and did not go bust. If the dealer has a higher amount than the player (while both are under 21), the player loses their bet. If the player has a higher amount than the dealer (but still under 21), the dealer pays the amount of the original bet to the player. If botht he dealer and player have the same amount, it is called a "push" and no money is exchanged.  
-
-## Requirements
-
-No requirements besides cloning the repo are necessary.
+Once all cards have been dealt and revealed, the bets are settled. If the dealer goes bust, they pay the original bet to the player if the player stood and did not go bust. If the dealer has a higher amount than the player (while both are under 21), the player loses their bet. If the player has a higher amount than the dealer (but still under 21), the dealer pays the amount of the original bet to the player. If botht he dealer and player have the same amount, it is called a "push" and no money is exchanged.
