@@ -1,33 +1,39 @@
-# Python Project Template Repository
+# Blackjack
 
-This is a template repository for a Python project. Feel free to use and edit
-this repository (including this file) for your needs. Below, find some
-instructions and tips for using this template repository.
+This is a blackjack game that runs from the terminal, taking user input.
 
-## How to Use
+## Running the Game
+Please make sure that you are connected to the internet, so that you can clone the repo!
 
-Click on the "Use this template" button in the top right corner to create a new
-repository based on this template. If this is for a class project, we ask that
-you keep it in the `olincollege` GitHub organization, and that you refrain from
-keeping the repository private. This will ensure that relevant people can access
-your repository for assessment, etc.
+### Python Related Requirements
+Requires Python 3.12 or above.
 
-## Requirements
+### Setup
 
-The `requirements.txt` file is blank and should be filled out with any project
-dependencies. There is a Python package called `pipreqs` that autogenerates the
-contents of the `requirements.txt` file based on the `import` statements in your
-`.py` files. To get this, run
+1. Choose a directory to clone repo in
+`cd xx`, where xx is the name of the repo you want to clone our game into
 
-```
-pip install pipreqs
-```
+2. Clone the Repository
+`git clone https://github.com/olincollege/shameful-blackjack`
+Make sure you're in the directory "shameful-blackjack"
 
-Then, in the root of your project repository, run:
+3. Install all packages
+`pip install -r requirements.txt`
 
-```
-pipreqs --mode compat
-```
+4. Run `python run_game.py` to start!
 
-If you already have a `requirements.txt`, the above command will ask you to
-rerun the command with the `--force` flag to overwrite it.
+## How to Play
+
+A player will start off with $500 to bet. The player can bet any amount between 1 and their remaining amount. 
+Two cards will be dealt to the player. To calculate the current score, add up the values of both cards. All face cards are 10, and aces can be either 1 or 11.  
+If the total of the first two cards is 21, the player has blackjack and is paid 3-2 their bet. 
+Two cards are then dealt to the dealer: one is face up and the other is face down.  
+The player can then choose whether to hit (be dealt another card) or stay (end their turn). This will be entered into the terminal as either 'h' or 's'. If the player's score goes above 21, they "bust" and lose their bet immediately.  
+There are two special cases that can happen.  
+If the player gets two cards that are the same (two 7s or two Jacks, for example), they can choose to split their hand. This means that they will treat each card as the first card in two separate hands. A bet equal to the original bet is placed on the second hand, and the player can hit and stay as usual on each hand.  
+If the player's original two cards total to 9, 10, or 11, the player can choose to double down. This means that they will be dealt one more card face down, and cannot get any more cards. This face down card is not revealed until all bets are settled at the end.
+If the player is dealt two fives, they can choose to split or double down.  
+After the player is done, the dealer reveals their second card. If they have blackjack, they will collect the bet from the player if the player has less than 21. If the dealer has less than 17, they must keep drawing until they have 17 or more.  
+Once all cards have been dealt and revealed, the bets are settled. If the dealer goes bust, they pay the original bet to the player if the player stood and did not go bust. If the dealer has a higher amount than the player (while both are under 21), the player loses their bet. If the player has a higher amount than the dealer (but still under 21), the dealer pays the amount of the original bet to the player. If botht he dealer and player have the same amount, it is called a "push" and no money is exchanged.
+
+## You can also see our [website](https://olincollege.github.io/shameful-blackjack/)!
