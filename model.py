@@ -59,23 +59,83 @@ class Model:
             return scores[0]
         return scores
 
-    def dealer_deal(self, deck_list, deck, num):
+    def dealer_deal(self, deck_list, deck, num, dealer_hand):
+        """
+        Plays the game from the dealers side
+        """
         while (
-            self.check_score(deck, self.dealer_hand)[0] <= 16
-            and self.check_score(deck, self.dealer_hand)[1] <= 16
+            self.check_score(deck, dealer_hand)[0] <= 16
+            and self.check_score(deck, dealer_hand)[1] <= 16
         ):
-            self.dealer_hand.append(deck_list[num])
+            dealer_hand.append(deck_list[num])
             num += 1
-            if self.check_score(deck, self.dealer_hand)[0] == 21:
+            if self.check_score(deck, dealer_hand)[0] == 21:
                 print("The dealer has 21!")
                 return 21
-            if self.check_score(deck, self.dealer_hand)[1] == 21:
+            if self.check_score(deck, dealer_hand)[1] == 21:
                 print("The dealer has 21!")
                 return 21
-            if self.check_score(deck, self.dealer_hand)[1] >= 17:
-                return self.check_score(deck, self.dealer_hand)[1]
-            if self.check_score(deck, self.dealer_hand)[0] >= 21:
-                return self.check_score(deck, self.dealer_hand)[0]
+            if self.check_score(deck, dealer_hand)[1] >= 17:
+                return self.check_score(deck, dealer_hand)[1]
+            if self.check_score(deck, dealer_hand)[0] >= 21:
+                return self.check_score(deck, dealer_hand)[0]
+
+    def checks(self, player_hand, dealer_hand, deck):
+        """
+        Checks to see if the player has the option to split, double down, or
+        take insurance.
+
+        When the two player cards are the same, the player can split.
+        When the two player cards are between 9 and 11 inclusive, the player
+        can double down.
+        When the dealer's visible card is an Ace, the player can take insurance.
+
+        args:
+        player_hand: A dictionary containing two strings, each of which is
+        a card as represented in the keys of the deck dictionary of the Cards
+        class.
+        Example: ['Kh', '8s']. This represents the player's hand.
+
+        dealer_hand: A dictionary containing two strings, each of which is
+        a card as represented in the keys of the deck dictionary of the Cards
+        class.
+        Example: ['Ad', '6h']. This represents the dealer's hand.
+
+        deck: deck is the deck dictionary of the Cards class. The keys of the
+        dictionary are strings with the first character being the card, and
+        the second character being the suit. The values are the integer values
+        of the cards as determined by the rules of blackjack.
+        Example of one key value pair: "2c": 2
+        In this dictionary, aces must have the value (1, 11) instead of a single
+        integer.
+
+        Returns:
+        A tuple containing three booleans which represent the value of each of
+        the three checks, with the indices of the tuple representing as such:
+        (double down, split, insurance)
+
+        Example:
+        (True, False, True) - This return would indicate that the two cards
+        used as input could be doubled down but not split, and the dealer has an
+        ace.
+        """
+        double_down_vals = [9, 10, 11]
+        aces = ["Ah", "As", "Ad", "Ac"]
+        double_down = False
+        split = False
+        needs_insurance = False
+        if player_hand[0] not in aces and player_hand[1] not in aces:
+            if (
+                sum(deck[player_hand[0]], deck[player_hand[1]])
+                in double_down_vals
+            ):
+                double_down = True
+        if player_hand[0][0] == player_hand[1][0]:
+            split = True
+        if dealer_hand[0][0] == "A":
+            needs_insurance = True
+
+        return (double_down, split, needs_insurance)
 
     # @property
     # def player_hand(self):

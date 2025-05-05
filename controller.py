@@ -14,6 +14,9 @@ class Controller:
         """
 
     def ask_bet(self):
+        """
+        Function docstring here
+        """
         try:
             action = input(
                 "How much would you like to bet? Enter a number between 1 and"
@@ -98,6 +101,36 @@ class Controller:
         except KeyError:
             print("Please enter y for yes or n for no.")
             self.ask_insurance()
+
+    def ask_after_checks(self, checks):
+        """
+        Asks the player if they'd like to split, double down, or take insurance,
+        depending on the value of a tuple input into it.
+
+        checks: A tuple in the format (bool, bool, bool). The value of bool is
+        True or False. The values of the bools represent whether or not the
+        player's and dealer's cards qualify to double down, split, or take
+        insurance, respectively.
+
+        returns: A tuple in the same format as the input boolean, with True
+        representing a player electing to take the option provided to them for
+        each case, and False representing the player not being able to or
+        choosing to not use their option.
+
+        Example: (True, False, True) - this represents the player choosing to
+        double down and take insurance.
+        """
+        double_down = False
+        split = False
+        insurance = False
+        if checks[0]:
+            double_down = self.ask_double_down()
+        if checks[1]:
+            split = self.ask_split()
+        if checks[2]:
+            insurance = self.ask_insurance
+
+        return (double_down, split, insurance)
 
 
 class Dealer:

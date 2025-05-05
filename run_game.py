@@ -71,7 +71,7 @@ def main():
                 break
     print("Now, it's my turn.")
     dealer_score = model.un_double_score(
-        model.dealer_deal(list_deck, deck, num_cards)
+        self.model.dealer_deal(list_deck, deck, num_cards)
     )
     # print("dealer score is", dealer_score)
     player_score = model.un_double_score(
@@ -101,23 +101,46 @@ class OneHand:
     Runs an individual hand of blackjack from start to finish
     """
 
+    def __init__(self):
+        self.model = Model()
+        self.view = View()
+        self.controller = Controller()
+        self.deck = Cards()
+        self.deck.shuffle()
+        self.list_deck = list(self.deck.available_deck.keys())
+        self.num_cards = 0
+        self.model.set_bet(
+            self.controller.ask_bet
+        )  # important to not have this be adopted by the child class
+
     def deal_setup(self):
         """
         Deals two cards to the dealer and two cards to the player
         """
-        #       model.deal
-        #       view.display_cards
-        #       model.check_for_ace
-        #       self.checks(card1, card2)
-        #       if control.ask_hit_or_stay:
-        #                  model.add_a_card()
-        #
-        pass
+        self.model.deal_player(self.list_deck, self.num_cards)
+        self.num_cards += 1
+        self.model.deal_player(self.list_deck, self.num_cards)
+        self.num_cards += 1
+        self.model.deal_dealer(self.list_deck, self.num_cards)
+        self.num_cards += 1
+        self.model.deal_dealer(self.list_deck, self.num_cards)
+        self.num_cards += 1
+        checks_post_deal = self.controller.ask_after_checks(
+            self.model.checks(
+                self.model.player_hand, self.model.dealer_hand, self.deck.deck
+            )
+        )
 
-    def checks(self, cards_in_hand, dealer_cards):
-        """
-        runs every checker function from the controller
-        """
+        if checks_post_deal[0]:  # Block for if the player doubles down
+            self.model.set_bet(2 * self.model.player_bet)
+            self.model.deal_player(self.list_deck, self.num_cards)
+            self.num_cards += 1
+            self.model.dealer_deal(
+                self.list_deck,
+                self.deck.deck,
+                self.num_cards,
+                self.model.dealer_hand,
+            )
 
 
 #       if cards_in_hand(0) == cards_in_hand(1):
@@ -126,3 +149,15 @@ class OneHand:
 #           control.ask_double_down
 #       if val(showing_dealer_card) = (1, 11)
 #           control.ask_insurance()
+
+
+class SplitHand(OneHand):
+    """
+    Modifies the OneHand class in the case of a hand needing to be split.
+    """
+
+    def __init__(self):
+        """
+        Establishes that one card is dealt, sets up variables.
+        """
+        self.num_cards = 1
