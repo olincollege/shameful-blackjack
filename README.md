@@ -35,3 +35,5 @@ If the player's original two cards total to 9, 10, or 11, the player can choose 
 If the player is dealt two fives, they can choose to split or double down.  
 After the player is done, the dealer reveals their second card. If they have blackjack, they will collect the bet from the player if the player has less than 21. If the dealer has less than 17, they must keep drawing until they have 17 or more.  
 Once all cards have been dealt and revealed, the bets are settled. If the dealer goes bust, they pay the original bet to the player if the player stood and did not go bust. If the dealer has a higher amount than the player (while both are under 21), the player loses their bet. If the player has a higher amount than the dealer (but still under 21), the dealer pays the amount of the original bet to the player. If botht he dealer and player have the same amount, it is called a "push" and no money is exchanged.
+
+## You can also see our [website](https://olincollege.github.io/shameful-blackjack/)!
