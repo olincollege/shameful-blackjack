@@ -13,8 +13,17 @@ class Model:
     def __init__(self):
         self.player_hand = []
         self.dealer_hand = []
-        self.player_bet = []
-        self.player_bankroll = []
+        self.player_bet = 0
+        self.player_bankroll = 500
+
+    def set_bet(self, bet):
+        self.player_bet = bet
+
+    def subtract_from_bank(self, bet):
+        self.player_bankroll -= bet
+
+    def add_to_bank(self, bet):
+        self.player_bankroll += bet
 
     def deal_player(self, deck, num):
         """
@@ -42,6 +51,8 @@ class Model:
         return total, other_total
 
     def un_double_score(self, scores):
+        if isinstance(scores, int):
+            return scores
         if scores[0] == scores[1]:
             return scores[0]
         if scores[1] > 21:
@@ -55,11 +66,16 @@ class Model:
         ):
             self.dealer_hand.append(deck_list[num])
             num += 1
-        print(
-            "The dealer's final score is",
-            self.un_double_score(self.check_score(deck, self.dealer_hand)),
-        )
-        return self.un_double_score(self.check_score(deck, self.dealer_hand))
+            if self.check_score(deck, self.dealer_hand)[0] == 21:
+                print("The dealer has 21!")
+                return 21
+            if self.check_score(deck, self.dealer_hand)[1] == 21:
+                print("The dealer has 21!")
+                return 21
+            if self.check_score(deck, self.dealer_hand)[1] >= 17:
+                return self.check_score(deck, self.dealer_hand)[1]
+            if self.check_score(deck, self.dealer_hand)[0] >= 21:
+                return self.check_score(deck, self.dealer_hand)[0]
 
     # @property
     # def player_hand(self):

@@ -13,6 +13,20 @@ class Controller:
         docstring here - set up hand
         """
 
+    def ask_bet(self):
+        try:
+            action = input(
+                "How much would you like to bet? Enter a number between 1 and"
+                " your current bankroll.\n"
+            )
+            if action.isnumeric():
+                return int(action)
+            else:
+                raise KeyError
+        except KeyError:
+            print("Please enter an integer.")
+            self.ask_bet()
+
     def ask_hit_or_stay(self):
         """
         Asks the user if they want to hit or stay.
