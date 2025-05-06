@@ -23,7 +23,7 @@ class Controller:
                 " your current bankroll.\n"
             )
             if action.isnumeric():
-                if action <= 0:
+                if int(action) <= 0:
                     raise ValueError
                 return int(action)
             else:
