@@ -16,6 +16,13 @@ class Model:
         self.player_bet = 0
         self.player_bankroll = 500
 
+    def __repr__(self):
+        return (
+            f"Player Hand: {self.player_hand}\nDealer Hand:"
+            f" {self.dealer_hand}\nPlayer's Bet: {self.player_bet}\nPlayer's"
+            f" Bankroll: {self.player_bankroll}"
+        )
+
     def set_bet(self, bet):
         self.player_bet = bet
 
