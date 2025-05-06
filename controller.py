@@ -23,7 +23,7 @@ class Controller:
                 " your current bankroll.\n"
             )
             if action.isnumeric():
-                if action <= 0:
+                if int(action) <= 0:
                     raise ValueError
                 return int(action)
             else:
@@ -76,7 +76,7 @@ class Controller:
         True if they want to continue, and False if they do not.
         """
         try:
-            prompt = input("Would you like to continue?")
+            prompt = input("Would you like to continue? ")
             if prompt == "y" or prompt == "Y":
                 return True
             if prompt == "N" or prompt == "n":

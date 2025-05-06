@@ -32,6 +32,9 @@ def main():
         add_money += addition
         has_money = hand.model.player_bankroll > 0
         want_to_continue = hand.controller.ask_want_to_continue()
+        hand.deck._available_deck = hand.deck.deck
+        hand.model.player_hand = []
+        hand.model.dealer_hand = []
 
 
 class OneHand:
@@ -40,6 +43,7 @@ class OneHand:
     """
 
     def __init__(self):
+        print("in onehand init")
         self.model = Model()
         self.view = View()
         self.controller = Controller()
@@ -55,7 +59,7 @@ class OneHand:
         """
         print(f"Bankroll: {self.model.player_bankroll}")
         self.model.set_bet(
-            self.controller.ask_bet  # important to not have this be adopted by the child class
+            self.controller.ask_bet()  # important to not have this be adopted by the child class
         )
         self.model.deal_player(self.list_deck, self.num_cards)
         self.num_cards += 1
@@ -86,7 +90,9 @@ class OneHand:
         )
 
         if checks_post_deal[0]:  # Block for if the player doubles down
+            print(self.model)
             doubler = self.model.player_bet
+            print("HELLO!!", doubler)
             self.model.set_bet(2 * doubler)
             print("Your bet is doubled and you get one additional card")
             self.model.deal_player(self.list_deck, self.num_cards)
@@ -100,27 +106,31 @@ class OneHand:
 
         draft_score, other_score = self.model.check_score(self.deck.deck, hand)
         player_score = self.model.un_double_score([draft_score, other_score])
+        print("PLAYER SCORE IN PLAYER_GOES", player_score)
         if player_score == 21:
             return 21
-        while self.controller.ask_hit_or_stay:
+        while self.controller.ask_hit_or_stay():
             self.model.deal_player(self.list_deck, self.num_cards)
             self.num_cards += 1
+            player_score_loop = self.model.un_double_score(
+                self.model.check_score(self.deck.deck, self.model.player_hand)
+            )
+            print(
+                "PLAYER SCORE IN PLAYER_GOES start of loop", player_score_loop
+            )
             print(
                 "Your"
-                f" cards:{self.view.show_cards(self.deck.deck, self.model.player_hand)}"
+                " cards:"
+                f" {self.view.show_cards(self.deck.deck, self.model.player_hand)}"
             )
-            if (
-                self.model.check_score(self.deck.deck, self.model.player_hand)
-                == 21
-            ):
+            if player_score_loop == 21:
                 return 21
-            if (
-                self.model.check_score(self.deck.deck, self.model.player_hand)
-                > 21
-            ):
-                return self.model.check_score(
-                    self.deck.deck, self.model.player_hand
-                )
+            if player_score_loop > 21:
+                return player_score_loop
+            print("PLAYER SCORE IN PLAYER_GOES end of loop", player_score_loop)
+        return self.model.un_double_score(
+            self.model.check_score(self.deck.deck, self.model.player_hand)
+        )
 
     def dealer_deal(self, deck_list, deck, num, dealer_hand):
         """
@@ -160,6 +170,9 @@ class OneHand:
             if self.model.check_score(deck, dealer_hand)[0] > 21:
                 print("Bust!")
                 return self.model.check_score(deck, dealer_hand)[0]
+        return self.model.un_double_score(
+            self.model.check_score(self.deck.deck, self.model.player_hand)
+        )
 
     def eval_hand(self, dealer_hand, player_hand):
         """
@@ -188,10 +201,10 @@ class OneHand:
             win = True
         if not dealer_bust and not player_bust and player_hand < dealer_hand:
             take = True
-        if len(player_hand) == 2 and player_hand == 21:
+        if len(self.model.player_hand) == 2 and player_hand == 21:
             bj = True
             payout = 3 / 2  # the factor by which to multiply the bet
-        if len(dealer_hand) == 2 and dealer_hand == 21:
+        if len(self.model.dealer_hand) == 2 and dealer_hand == 21:
             bj = True
             payout = -3 / 2
         if player_bust and not dealer_bust:
