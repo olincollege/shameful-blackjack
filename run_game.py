@@ -1,9 +1,10 @@
 """
-runs da game
+Contains the main function, which runs the game, as well as the OneHand class,
+which runs one hand of the game.
 """
 
 from model import Cards, Model
-from controller import Controller, Dealer
+from controller import Controller
 from view import View
 
 
@@ -11,87 +12,27 @@ def main():
     """
     runs the blackjack game from start to finish.
     """
-    model = Model()
-    view = View()
-    controller = Controller()
-    print("Welcome to my table... Are you feeling lucky?")
-    # print("I'll show you the deck, so you can see there's been no tampering.")
-    deck = Cards()
-    # print(deck)
-    # print("Now, I'll shuffle the cards, and show you those too.")
-    # deck.shuffle()
-    # print(deck)
-    # print("Ready to play? I'll shuffle the cards one final time.")
-    deck.shuffle()
-    list_deck = list(deck.available_deck.keys())
-    # card = list_deck[0]
-    # print(view.print_card(deck, card))
-    print(view.show_bankroll(model.player_bankroll))
-    bet = controller.ask_bet()
-    model.set_bet(bet)
-    num_cards = 0
-    model.deal_player(list_deck, num_cards)
-    # print(model.player_hand)
-    num_cards += 1
-    model.deal_player(list_deck, num_cards)
-    num_cards += 1
-    # print(model.player_hand)
-    print("Your cards are: ", view.show_cards(deck, model.player_hand))
-    print(
-        "Your current score is",
-        model.un_double_score(model.check_score(deck, model.player_hand)),
-    )
-    if model.check_score(deck, model.player_hand)[0] == 21:
-        print("Blackjack!")
-        model.add_to_bank(bet * 3 / 2)
-    if model.check_score(deck, model.player_hand)[1] == 21:
-        print("Blackjack!")
-        model.add_to_bank(bet * 3 / 2)
-    else:
-        while controller.ask_hit_or_stay():
-            print("You hit, so you will be dealt another card")
-            model.deal_player(list_deck, num_cards)
-            num_cards += 1
-            # print(model.player_hand)
-            print("Your cards are:", view.show_cards(deck, model.player_hand))
-            print(
-                "Your current score is",
-                model.un_double_score(
-                    model.check_score(deck, model.player_hand)
-                ),
-            )
-            if model.check_score(deck, model.player_hand)[0] == 21:
-                print("21!")
-                break
-            if model.check_score(deck, model.player_hand)[1] == 21:
-                print("21!")
-                break
-            if model.check_score(deck, model.player_hand)[0] >= 21:
-                print("Bust...")
-                break
-    print("Now, it's my turn.")
-    dealer_score = model.un_double_score(
-        self.dealer_deal(list_deck, deck, num_cards, model.dealer_hand)
-    )
-    # print("dealer score is", dealer_score)
-    player_score = model.un_double_score(
-        model.check_score(deck, model.player_hand)
-    )
-    # print("ur score is", player_score)
-    if (
-        dealer_score < 21
-        and player_score < 21
-        and 21 - dealer_score > 21 - player_score
-    ):
-        model.add_to_bank(bet)
-    if 21 >= dealer_score and dealer_score > player_score:
-        model.subtract_from_bank(bet)
-    if dealer_score > 21 and 21 >= player_score:
-        model.add_to_bank(bet)
-    print("The dealer's final score is", dealer_score)
-    print(view.show_bankroll(model.player_bankroll))
     hand = OneHand()
-    print(hand.eval_hand(model.dealer_hand, model.player_hand))
+    want_to_continue = True
+    has_money = True
+    add_money = 0
+
+    while want_to_continue and has_money:
+        hand.model.player_bankroll += add_money
+        add_money = 0
+        print(f"Your bankroll: {hand.model.player_bankroll}")
+        hand.deal_setup()
+        player = hand.player_goes(hand.model.player_hand)
+        dealer = hand.dealer_deal(
+            hand.list_deck,
+            hand.deck.deck,
+            hand.num_cards,
+            hand.model.dealer_hand,
+        )
+        addition = hand.finish_hand(hand.eval_hand(dealer, player))
+        add_money += addition
+        has_money = hand.model.player_bankroll > 0
+        want_to_continue = hand.controller.ask_want_to_continue()
 
 
 class OneHand:
@@ -261,7 +202,7 @@ class OneHand:
             payout = 1
         return (take, push, bj, win, payout)
 
-    def finish_hand(self, eval):
+    def finish_hand(self, evaluation):
         """
         Takes the result of a hand, and prints a statement to represent it to
         the player. Pays the player out.
@@ -274,19 +215,19 @@ class OneHand:
             bj: a string representing a blackjack for either the dealer or player
             win: a string representing the player win
             payout: an integer representing what the original bet should be multiplied by to be added to the bankroll
+
+            Returns: An integer representing the amount to be added to the bankroll
         """
-        self.model.add_to_bank(
-            self.model.player_bet + eval[4] * self.model.player_bet
-        )
-        if eval[0]:
+
+        if evaluation[0]:
             print("Ha! Your bet is mine!!")
-        if eval[1]:
+        if evaluation[1]:
             print("Ugh, push. Take your bet, dweeb.")
-        if eval[2]:
+        if evaluation[2]:
             print("21 - well played! Here is your bet and some extra.")
-        if eval[3]:
+        if evaluation[3]:
             print("I dislike you mildly.")
-        print(f"Bankroll: {self.model.player_bankroll}")
+        return self.model.player_bet + evaluation[4] * self.model.player_bet
 
 
 class SplitHand(OneHand):

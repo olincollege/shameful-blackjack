@@ -66,6 +66,23 @@ class Controller:
             print("Please enter y for yes or n for no.")
             self.ask_double_down()
 
+    def ask_want_to_continue(self):
+        """
+        Asks if the player would like to continue.
+
+        Returns:
+        True if they want to continue, and False if they do not.
+        """
+        try:
+            prompt = input("Would you like to continue?")
+            if prompt == "y" or prompt == "Y":
+                return True
+            if prompt == "N" or prompt == "n":
+                return False
+            raise KeyError
+        except KeyError:
+            print("Please enter y for yes or n for no.")
+
     def ask_split(self):
         """
         Asks the user if they want to split.
@@ -131,9 +148,3 @@ class Controller:
             insurance = self.ask_insurance
 
         return (double_down, split, insurance)
-
-
-class Dealer:
-    """
-    Does all the dealer stuff
-    """
