@@ -1,5 +1,5 @@
 """
-Contains the Controller class and Dealer class
+Contains the Controller class, which takes input from the user
 """
 
 
@@ -10,12 +10,16 @@ class Controller:
 
     def __init__(self):
         """
-        docstring here - set up hand
+        Intializes any attributes (none in this case) for the class.
         """
 
     def ask_bet(self):
         """
-        Function docstring here
+        Asks the user for how much they would like to bet. Prevents incorrect input (strings, negative numbers).
+        Args:
+            None
+        Returns:
+            action (int): the amount of money they want to bet
         """
         try:
             action = input(
@@ -36,8 +40,8 @@ class Controller:
         """
         Asks the user if they want to hit or stay.
 
-        Returns True or false depending on the user input, and raises a key
-        error if the user doesn't input correctly.
+        Returns (bool) depending on the user input (true for hit, false for stay)
+        Raises a key error if the user doesn't input correctly.
         """
         try:
             action = input("Would you like to hit or stay?\n(h/s) ")
@@ -54,11 +58,12 @@ class Controller:
         """
         Asks the user if they want to double down.
 
-        Returns True or false depending on the user input, and raises a key
-        error if the user doesn't input correctly.
+        Returns bool depending on the user input (true for double down, false for no double
+        down)
+        Raises a key error if the user doesn't input correctly.
         """
         try:
-            action = input("Would you like to double down?\n(y/n) ")
+            action = input("Would you like to double down?\n(y/n)")
             if action == "y" or action == "Y":
                 return True
             if action == "N" or action == "n":
@@ -70,7 +75,7 @@ class Controller:
 
     def ask_want_to_continue(self):
         """
-        Asks if the player would like to continue.
+        Asks if the player would like to continue to another game.
 
         Returns:
         True if they want to continue, and False if they do not.
@@ -90,8 +95,9 @@ class Controller:
         """
         Asks the user if they want to split.
 
-        Returns True or false depending on the user input, and raises a key
-        error if the user doesn't input correctly.
+        Returns True or false depending on the user input (true if they want to split, false
+        if they don't).
+        Raises a key error if the user doesn't input correctly.
         """
         try:
             action = input("Would you like to split?\n(y/n) ")
@@ -108,8 +114,9 @@ class Controller:
         """
         Asks the user if they want insurance.
 
-        Returns True or false depending on the user input, and raises a key
-        error if the user doesn't input correctly.
+        Returns bool depending on the user input (true if they want insurance, false
+        if they don't).
+        Raises a key error if the user doesn't input correctly.
         """
         try:
             action = input("I have an ace! Would you like insurance?\n(y/n)")
