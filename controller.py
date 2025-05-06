@@ -23,11 +23,13 @@ class Controller:
                 " your current bankroll.\n"
             )
             if action.isnumeric():
+                if action <= 0:
+                    raise ValueError
                 return int(action)
             else:
                 raise KeyError
         except KeyError:
-            print("Please enter an integer.")
+            print("Please enter an integer greater than 0.")
             self.ask_bet()
 
     def ask_hit_or_stay(self):
