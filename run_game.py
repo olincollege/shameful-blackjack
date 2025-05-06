@@ -225,36 +225,7 @@ class OneHand:
         print("PLAYER HAND IN EVAL HAND", player_hand)
         dealer_bust = dealer_hand > 21
 
-        # if len(self.model.player_hand) == 2 and player_hand == 21:
-        #     bj = True
-        #     payout = 3 / 2  # the factor by which to multiply the bet
-        # if len(self.model.dealer_hand) == 2 and dealer_hand == 21:
-        #     bj = True
-        #     payout = -3 / 2
-
-        # if len(self.model.player_hand) == 2 and player_hand == 21:
-        #     # if the player originally got a blackjack
-        #     if len(self.model.dealer_hand) == 2 and dealer_hand == 21:
-        #         push = True
-        #     bj = True
-        #     payout = 3 / 2
-        # elif len(self.model.dealer_hand) == 2 and dealer_hand == 21:
-        #     if len(self.model.dealer_hand) == 2 and dealer_hand == 21:
-        #         push = True
-        #     take = True
-        #     payout = -1
-        # # above is blackjack related things
-        # # now it's take time
-        # # first with busts
-        # if (player_bust and not dealer_bust) or (not player_bust and player_hand < dealer_hand):
-        #     take = True
-        #     payout = -1
-
-        # if neither is busted, and i have a hgiher score than the dealer
-        # i need to make sure there's only one thing that's true at any point
         while True:
-            print(dealer_hand, "dealer hand")
-            print(player_hand, "player hand")
 
             if len(self.model.player_hand) == 2 and player_hand == 21:
                 if dealer_hand == 21:
@@ -306,8 +277,6 @@ class OneHand:
                 win = True
                 break
 
-        print("out of while loop")
-        print((take, push, bj, win, payout))
         return (take, push, bj, win, payout)
 
     def finish_hand(self, evaluation):
