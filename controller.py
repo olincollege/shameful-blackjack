@@ -30,7 +30,7 @@ class Controller:
                 raise KeyError
         except KeyError:
             print("Please enter an integer greater than 0.")
-            self.ask_bet()
+            return self.ask_bet()
 
     def ask_hit_or_stay(self):
         """
@@ -48,7 +48,7 @@ class Controller:
             raise KeyError
         except KeyError:
             print("Please enter h for hit or s for stay.")
-            self.ask_hit_or_stay()
+            return self.ask_hit_or_stay()
 
     def ask_double_down(self):
         """
@@ -66,7 +66,7 @@ class Controller:
             raise KeyError
         except KeyError:
             print("Please enter y for yes or n for no.")
-            self.ask_double_down()
+            return self.ask_double_down()
 
     def ask_want_to_continue(self):
         """
@@ -84,6 +84,7 @@ class Controller:
             raise KeyError
         except KeyError:
             print("Please enter y for yes or n for no.")
+            return self.ask_want_to_continue()
 
     def ask_split(self):
         """
@@ -101,7 +102,7 @@ class Controller:
             raise KeyError
         except KeyError:
             print("Please enter y for yes or n for no.")
-            self.ask_split()
+            return self.ask_split()
 
     def ask_insurance(self):
         """
@@ -119,7 +120,7 @@ class Controller:
             raise KeyError
         except KeyError:
             print("Please enter y for yes or n for no.")
-            self.ask_insurance()
+            return self.ask_insurance()
 
     def ask_after_checks(self, checks):
         """
