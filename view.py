@@ -25,7 +25,7 @@ class View:
         """
         label = card[0]
         suit = self._SUITS[card[len(card) - 1]]
-        val = deck.deck[card]
+        val = deck[card]
         if label == "A":
             label = "Ace"
         if label == "K":

@@ -20,7 +20,6 @@ def main():
     while want_to_continue and has_money:
         hand.model.player_bankroll += add_money
         add_money = 0
-        print(f"Your bankroll: {hand.model.player_bankroll}")
         hand.deal_setup()
         player = hand.player_goes(hand.model.player_hand)
         dealer = hand.dealer_deal(
@@ -87,7 +86,8 @@ class OneHand:
         )
 
         if checks_post_deal[0]:  # Block for if the player doubles down
-            self.model.set_bet(2 * self.model.player_bet)
+            doubler = self.model.player_bet
+            self.model.set_bet(2 * doubler)
             print("Your bet is doubled and you get one additional card")
             self.model.deal_player(self.list_deck, self.num_cards)
             self.num_cards += 1
@@ -103,7 +103,7 @@ class OneHand:
         if player_score == 21:
             return 21
         while self.controller.ask_hit_or_stay:
-            self.model.deal_player(self.deck.deck, self.num_cards)
+            self.model.deal_player(self.list_deck, self.num_cards)
             self.num_cards += 1
             print(
                 "Your"

@@ -52,7 +52,7 @@ class Model:
         total = 0
         other_total = 0
         for card in hand:
-            val = deck.deck[card]
+            val = deck[card]
             if val == (1, 11):
                 total += val[0]
                 other_total += val[1]
