@@ -125,9 +125,8 @@ class Model:
         needs_insurance = False
         if player_hand[0] not in aces and player_hand[1] not in aces:
             if (
-                sum(deck[player_hand[0]], deck[player_hand[1]])
-                in double_down_vals
-            ):
+                deck[player_hand[0]] + deck[player_hand[1]]
+            ) in double_down_vals:
                 double_down = True
         if player_hand[0][0] == player_hand[1][0]:
             split = True

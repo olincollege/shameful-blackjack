@@ -35,6 +35,13 @@ def main():
             model_test.check_score(cards_test, model_test.dealer_hand)
         ),
     )
+    print("double down, split, and insurance tests")
+    checks = model_test.checks(
+        model_test.player_hand, model_test.dealer_hand, cards_test.deck
+    )
+    print(
+        f"double down: {checks[0]}, split: {checks[1]}, insurance: {checks[2]}"
+    )
 
 
 if __name__ == "__main__":
