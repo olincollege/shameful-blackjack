@@ -4,6 +4,7 @@ Contains the model class and card class.
 
 import random
 
+
 class Model:
     """
     Contains all of the data needed to run the game (content of deck, player and dealer's hands,
@@ -172,19 +173,13 @@ class Model:
         double_down_vals = [9, 10, 11]
         aces = ["Ah", "As", "Ad", "Ac"]
         double_down = False
-        split = False
-        needs_insurance = False
         if player_hand[0] not in aces and player_hand[1] not in aces:
             if (
                 deck[player_hand[0]] + deck[player_hand[1]]
             ) in double_down_vals:
                 double_down = True
-        if player_hand[0][0] == player_hand[1][0]:
-            split = True
-        if dealer_hand[0][0] == "A":
-            needs_insurance = True
 
-        return (double_down, split, needs_insurance)
+        return double_down
 
 
 class Cards:

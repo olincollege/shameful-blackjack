@@ -39,6 +39,7 @@ def main():
         hand.deck._available_deck = hand.deck.deck
         hand.model.player_hand = []
         hand.model.dealer_hand = []
+        hand.num_cards = 0
 
 
 class OneHand:
@@ -60,6 +61,8 @@ class OneHand:
         """
         Deals two cards to the dealer and two cards to the player
         """
+        self.deck.shuffle()
+        self.list_deck = list(self.deck.available_deck.keys())
         print(f"Bankroll: {self.model.player_bankroll}")
         self.model.set_bet(
             self.controller.ask_bet()  # important to not have this be adopted by the child class
@@ -92,7 +95,7 @@ class OneHand:
             )
         )
 
-        if checks_post_deal[0]:  # Block for if the player doubles down
+        if checks_post_deal:  # Block for if the player doubles down
             # print(self.model)
             doubler = self.model.player_bet
             # print("HELLO!!", doubler)
@@ -103,30 +106,6 @@ class OneHand:
             return self.model.check_score(
                 self.deck.deck, self.model.player_hand
             )
-
-        if checks_post_deal[1]:  # splitting....
-            self.model.split_1 = self.model.player_hand.pop(1)
-            while self.controller.ask_hit_or_stay():
-                self.model.deal_player(self.list_deck, self.num_cards)
-                self.num_cards += 1
-                player_score_loop = self.model.un_double_score(
-                    self.model.check_score(
-                        self.deck.deck, self.model.player_hand
-                    )
-                )
-                print(
-                    "Your"
-                    " cards:"
-                    f" {self.view.show_cards(self.deck.deck, self.model.player_hand)}"
-                )
-                if player_score_loop == 21:
-                    return 21
-                if player_score_loop > 21:
-                    return player_score_loop
-                print("Your score is", player_score_loop)
-
-        if checks_post_deal[2]:  # block for if the player takes insurance
-            self.is_insurance = True
 
         draft_score, other_score = self.model.check_score(self.deck.deck, hand)
         player_score = self.model.un_double_score([draft_score, other_score])
