@@ -71,7 +71,7 @@ def main():
                 break
     print("Now, it's my turn.")
     dealer_score = model.un_double_score(
-        model.dealer_deal(list_deck, deck, num_cards, model.dealer_hand)
+        self.dealer_deal(list_deck, deck, num_cards, model.dealer_hand)
     )
     # print("dealer score is", dealer_score)
     player_score = model.un_double_score(
@@ -108,14 +108,15 @@ class OneHand:
         self.list_deck = list(self.deck.available_deck.keys())
         self.num_cards = 0
         self.is_insurance = False
-        self.model.set_bet(
-            self.controller.ask_bet  # important to not have this be adopted by the child class
-        )
 
     def deal_setup(self):
         """
         Deals two cards to the dealer and two cards to the player
         """
+        print(f"Bankroll: {self.model.player_bankroll}")
+        self.model.set_bet(
+            self.controller.ask_bet  # important to not have this be adopted by the child class
+        )
         self.model.deal_player(self.list_deck, self.num_cards)
         self.num_cards += 1
         self.model.deal_player(self.list_deck, self.num_cards)
@@ -124,7 +125,8 @@ class OneHand:
         self.num_cards += 1
         self.model.deal_dealer(self.list_deck, self.num_cards)
         self.num_cards += 1
-        # Display player cards and face up dealer card
+        print(f"Your cards: {self.model.player_hand}")
+        print(f"My Card (That you can see): {self.model.dealer_hand[0]}")
 
     def player_goes(self, hand):
         """
@@ -145,13 +147,11 @@ class OneHand:
 
         if checks_post_deal[0]:  # Block for if the player doubles down
             self.model.set_bet(2 * self.model.player_bet)
+            print("Your bet is doubled and you get one additional card")
             self.model.deal_player(self.list_deck, self.num_cards)
             self.num_cards += 1
-            self.model.dealer_deal(
-                self.list_deck,
-                self.deck.deck,
-                self.num_cards,
-                self.model.dealer_hand,
+            return self.model.check_score(
+                self.deck.deck, self.model.player_hand
             )
 
         if checks_post_deal[2]:  # block for if the player takes insurance
@@ -239,24 +239,18 @@ class OneHand:
         bj = False
         win = False
         payout = 0
-        player_score = 0
-        dealer_score = 0
-        for card in player_hand:
-            player_score += self.deck.deck[card]
-        for card in dealer_hand:
-            dealer_score += self.deck.deck[card]
-        player_bust = player_score > 21
-        dealer_bust = dealer_score > 21
-        if not dealer_bust and not player_bust and player_score == dealer_score:
+        player_bust = player_hand > 21
+        dealer_bust = dealer_hand > 21
+        if not dealer_bust and not player_bust and player_hand == dealer_hand:
             push = True
-        if not dealer_bust and not player_bust and player_score > dealer_score:
+        if not dealer_bust and not player_bust and player_hand > dealer_hand:
             win = True
-        if not dealer_bust and not player_bust and player_score < dealer_score:
+        if not dealer_bust and not player_bust and player_hand < dealer_hand:
             take = True
-        if len(player_hand) == 2 and player_score == 21:
+        if len(player_hand) == 2 and player_hand == 21:
             bj = True
             payout = 3 / 2  # the factor by which to multiply the bet
-        if len(dealer_hand) == 2 and dealer_score == 21:
+        if len(dealer_hand) == 2 and dealer_hand == 21:
             bj = True
             payout = -3 / 2
         if player_bust and not dealer_bust:
@@ -284,6 +278,15 @@ class OneHand:
         self.model.add_to_bank(
             self.model.player_bet + eval[4] * self.model.player_bet
         )
+        if eval[0]:
+            print("Ha! Your bet is mine!!")
+        if eval[1]:
+            print("Ugh, push. Take your bet, dweeb.")
+        if eval[2]:
+            print("21 - well played! Here is your bet and some extra.")
+        if eval[3]:
+            print("I dislike you mildly.")
+        print(f"Bankroll: {self.model.player_bankroll}")
 
 
 class SplitHand(OneHand):
