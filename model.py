@@ -38,6 +38,10 @@ class Model:
         self.dealer_hand.append(deck[num])
 
     def check_score(self, deck, hand):
+        """
+        Evaluates the score of a given hand, returning two values in case one
+        of the cards is an ace
+        """
         total = 0
         other_total = 0
         for card in hand:
@@ -51,29 +55,49 @@ class Model:
         return total, other_total
 
     def un_double_score(self, scores):
+        """
+        Chooses the better of two scores for the purposes of blackjack.
+
+        Args:
+            scores: the two scores to be chosen between, in a list
+
+        returns:
+            the better of the two scores as an integer
+        """
         if isinstance(scores, int):
             return scores
         if scores[0] == scores[1]:
             return scores[0]
         if scores[1] > 21:
             return scores[0]
-        return scores
+        return scores[1]
 
     def dealer_deal(self, deck_list, deck, num, dealer_hand):
         """
-        Plays the game from the dealers side
+        Plays the game from the dealers side.
+
+        Args:
+        deck_list: The shuffled deck
+        deck: The whole deck dictionary
+        num: the number of cards deep into the deck the hand is
+        dealer_hand: the first two cards in the dealers hand.
+
+        Returns: an integer representing the dealers final score, equivalent to
+        the sum of the values of the cards in the dealer's hand.
         """
+        print(f"My Cards: {dealer_hand}")
         while (
             self.check_score(deck, dealer_hand)[0] <= 16
             and self.check_score(deck, dealer_hand)[1] <= 16
         ):
             dealer_hand.append(deck_list[num])
             num += 1
+            print(dealer_hand)
             if self.check_score(deck, dealer_hand)[0] == 21:
-                print("The dealer has 21!")
+                print("21!")
                 return 21
             if self.check_score(deck, dealer_hand)[1] == 21:
-                print("The dealer has 21!")
+                print("21!")
                 return 21
             if self.check_score(deck, dealer_hand)[1] >= 17:
                 return self.check_score(deck, dealer_hand)[1]
