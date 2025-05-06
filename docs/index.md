@@ -11,7 +11,10 @@ Now you can play blackjack at home, right from your computer!* No stress, no ris
 
 Simple interface with keyboard based input.
 ![demo gameplay](demo_gameplay.png "Example gameplay")  
-## [INSERT VIDEO HERE]
+<video width="640" height="360" controls>
+  <source src="videos/SoftDes_Final_Video.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
 
 Ready to play? Check out the setup instructions [here](/README.md):
 
