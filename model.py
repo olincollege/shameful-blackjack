@@ -4,19 +4,25 @@ Contains the model class and card class.
 
 import random
 
-
 class Model:
     """
-    Contains all of the data needed to run the game
+    Contains all of the data needed to run the game (content of deck, player and dealer's hands,
+    bet, bankroll, etc.)
     """
 
     def __init__(self):
+        """
+        Defines the attributes necessary for gameplay.
+        """
         self.player_hand = []
         self.dealer_hand = []
         self.player_bet = 0
         self.player_bankroll = 500
 
     def __repr__(self):
+        """
+        Prints relevant information, like contents of hands.
+        """
         return (
             f"Player Hand: {self.player_hand}\nDealer Hand:"
             f" {self.dealer_hand}\nPlayer's Bet: {self.player_bet}\nPlayer's"
@@ -24,30 +30,72 @@ class Model:
         )
 
     def set_bet(self, bet):
+        """
+        Intializes the bet of the player.
+        Args:
+            bet (int): bet that player wants to use
+        Returns:
+            None
+        """
         self.player_bet = bet
 
     def subtract_from_bank(self, bet):
+        """
+        Take money away from bankroll after bet has been set.
+        Args:
+            bet (int): bet that will be taken away from bankroll
+        Returns:
+            None
+        """
         self.player_bankroll -= bet
 
     def add_to_bank(self, bet):
+        """
+        Adds money to bankroll after winnings are made.
+        Args:
+            bet (int): amount of money to add to bankroll
+        Returns:
+            None
+        """
         self.player_bankroll += bet
 
     def deal_player(self, deck, num):
         """
-        deals one card to the player
+        Deals one card to the player.
+        Args:
+            deck: list transformed from an instance of Cards class that contains
+            card values (but not points)
+            num: placement in deck that card will be pulled from (i.e deck[0] pulls
+            first card in deck)
+        Returns:
+            None
         """
         self.player_hand.append(deck[num])
 
     def deal_dealer(self, deck, num):
         """
-        deals one card to the dealer
+        Similar to deal_player; deals one card to the dealer.
+        Args:
+            deck: list transformed from an instance of Cards class that contains
+            card values (but not points)
+            num: placement in deck that card will be pulled from (i.e deck[0] pulls
+            first card in deck)
+        Returns:
+            None
         """
         self.dealer_hand.append(deck[num])
 
     def check_score(self, deck, hand):
         """
         Evaluates the score of a given hand, returning two values in case one
-        of the cards is an ace
+        of the cards is an ace.
+        Args:
+            deck: instance of Cards class that contains a dict of card values and points
+            hand: attribute in model class that is a list of card types only (no points) that the
+            player has in hand
+        Returns:
+            total (int): total point value of cards in hand
+            other_total (int): returns alternative total if the card is an ace
         """
         total = 0
         other_total = 0
@@ -68,7 +116,7 @@ class Model:
         Args:
             scores: the two scores to be chosen between, in a list
 
-        returns:
+        Returns:
             the better of the two scores as an integer
         """
         if isinstance(scores, int):
@@ -89,18 +137,18 @@ class Model:
         can double down.
         When the dealer's visible card is an Ace, the player can take insurance.
 
-        args:
+        Args:
         player_hand: A dictionary containing two strings, each of which is
         a card as represented in the keys of the deck dictionary of the Cards
         class.
         Example: ['Kh', '8s']. This represents the player's hand.
 
-        dealer_hand: A dictionary containing two strings, each of which is
+        Dealer_hand: A dictionary containing two strings, each of which is
         a card as represented in the keys of the deck dictionary of the Cards
         class.
         Example: ['Ad', '6h']. This represents the dealer's hand.
 
-        deck: deck is the deck dictionary of the Cards class. The keys of the
+        Deck: deck is the deck dictionary of the Cards class. The keys of the
         dictionary are strings with the first character being the card, and
         the second character being the suit. The values are the integer values
         of the cards as determined by the rules of blackjack.
@@ -135,31 +183,15 @@ class Model:
 
         return (double_down, split, needs_insurance)
 
-    # @property
-    # def player_hand(self):
-    #     """
-    #     Returns the available deck
-    #     """
-    #     return self.player_hand
-
-    # @property
-    # def dealer_hand(self):
-    #     """
-    #     Returns the available deck
-    #     """
-    #     return self.dealer_hand
-
 
 class Cards:
     """
-    contains a dictionary with every card and its blackjack value.
+    Contains a dictionary with every card and its blackjack value.
     """
-
-    # _SUITS = {"s": "spades", "c": "clubs", "h": "hearts", "d": "diamonds"}
 
     def __init__(self):
         """
-        Sets up deck of cards
+        Sets up deck of cards.
         """
         self._deck = {
             "As": (1, 11),
@@ -218,39 +250,23 @@ class Cards:
         self._available_deck = self._deck
 
     def __repr__(self):
+        """
+        Sets up a string that displays all the card values.
+        Args:
+            None
+        Returns:
+            string (str): card name and point value
+        """
         string = ""
         for key, value in self._available_deck.items():
             string += key + ", "
         string = string[0 : len(string) - 2]
         return string
 
-    # def print_card(self, card):
-    #     """
-    #     Represents a card
-    #     card: a string matching one of the keys in the self._deck: Valuesuit format
-    #     Returns: a string saying Value of Suit for the card
-    #     """
-    #     label = card[0]
-    #     suit = self._SUITS[card[len(card) - 1]]
-    #     val = self._deck[card]
-    #     if label == "A":
-    #         label = "Ace"
-    #     if label == "K":
-    #         label = "King"
-    #     if label == "Q":
-    #         label = "Queen"
-    #     if label == "J":
-    #         label = "Jack"
-    #     if label == "1":
-    #         label = "10"
-    #     if val == (1, 11):
-    #         val = "either 1 or 11"
-    #     return label + " of " + suit + " with a value of " + str(val)
-
     def shuffle(self):
         """
-        Shuffles the deck
-        Returns: the newly shuffled deck- a dictionary
+        Shuffles the deck.
+        Returns: (dict) the newly shuffled deck
         """
         dictionary = self._deck
         keys = list(dictionary.keys())
