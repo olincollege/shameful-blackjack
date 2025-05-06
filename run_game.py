@@ -29,7 +29,9 @@ def main():
             hand.num_cards,
             hand.model.dealer_hand,
         )
-        addition = hand.finish_hand(hand.eval_hand(dealer, player))
+        addition = hand.finish_hand(
+            hand.eval_hand(dealer, hand.model.un_double_score(player))
+        )
         # add_money += addition
         hand.model.player_bankroll += addition
         has_money = hand.model.player_bankroll > 0
@@ -173,8 +175,8 @@ class OneHand:
         """
         print(f"My Cards: {dealer_hand}")
         while (
-            self.model.check_score(deck, dealer_hand)[0] <= 16
-            and self.model.check_score(deck, dealer_hand)[1] <= 16
+            self.model.check_score(deck, dealer_hand)[0] <= 17
+            and self.model.check_score(deck, dealer_hand)[1] <= 17
         ):
             dealer_hand.append(deck_list[num])
             num += 1
@@ -222,26 +224,90 @@ class OneHand:
         player_bust = player_hand > 21
         print("PLAYER HAND IN EVAL HAND", player_hand)
         dealer_bust = dealer_hand > 21
-        if not dealer_bust and not player_bust and player_hand == dealer_hand:
-            push = True
-        if dealer_bust and player_bust:
-            push = True
-        if not dealer_bust and not player_bust and player_hand > dealer_hand:
-            win = True
-        if not dealer_bust and not player_bust and player_hand < dealer_hand:
-            take = True
-        if len(self.model.player_hand) == 2 and player_hand == 21:
-            bj = True
-            payout = 3 / 2  # the factor by which to multiply the bet
-        if len(self.model.dealer_hand) == 2 and dealer_hand == 21:
-            bj = True
-            payout = -3 / 2
-        if player_bust and not dealer_bust:
-            take = True
-            payout = -2
-        if not player_bust and dealer_bust:
-            win = True
-            payout = 1
+
+        # if len(self.model.player_hand) == 2 and player_hand == 21:
+        #     bj = True
+        #     payout = 3 / 2  # the factor by which to multiply the bet
+        # if len(self.model.dealer_hand) == 2 and dealer_hand == 21:
+        #     bj = True
+        #     payout = -3 / 2
+
+        # if len(self.model.player_hand) == 2 and player_hand == 21:
+        #     # if the player originally got a blackjack
+        #     if len(self.model.dealer_hand) == 2 and dealer_hand == 21:
+        #         push = True
+        #     bj = True
+        #     payout = 3 / 2
+        # elif len(self.model.dealer_hand) == 2 and dealer_hand == 21:
+        #     if len(self.model.dealer_hand) == 2 and dealer_hand == 21:
+        #         push = True
+        #     take = True
+        #     payout = -1
+        # # above is blackjack related things
+        # # now it's take time
+        # # first with busts
+        # if (player_bust and not dealer_bust) or (not player_bust and player_hand < dealer_hand):
+        #     take = True
+        #     payout = -1
+
+        # if neither is busted, and i have a hgiher score than the dealer
+        # i need to make sure there's only one thing that's true at any point
+        while True:
+            print(dealer_hand, "dealer hand")
+            print(player_hand, "player hand")
+
+            if len(self.model.player_hand) == 2 and player_hand == 21:
+                if dealer_hand == 21:
+                    push = True
+                    break
+                payout = 3 / 2  # the factor by which to multiply the bet
+                bj = True
+                break
+            if len(self.model.dealer_hand) == 2 and dealer_hand == 21:
+                if player_hand == 21:
+                    push = True
+                    break
+                payout = -3 / 2
+                take = True
+                break
+            if dealer_bust and player_bust:
+                take = True
+                payout = -1
+                break
+            if (
+                not dealer_bust
+                and not player_bust
+                and player_hand == dealer_hand
+            ):
+                push = True
+                break
+            if (
+                not dealer_bust
+                and not player_bust
+                and player_hand > dealer_hand
+            ):
+                payout = 1
+                win = True
+                break
+            if (
+                not dealer_bust
+                and not player_bust
+                and player_hand < dealer_hand
+            ):
+                payout = -1
+                take = True
+                break
+            if player_bust and not dealer_bust:
+                payout = -1
+                take = True
+                break
+            if not player_bust and dealer_bust:
+                payout = 1
+                win = True
+                break
+
+        print("out of while loop")
+        print((take, push, bj, win, payout))
         return (take, push, bj, win, payout)
 
     def finish_hand(self, evaluation):
