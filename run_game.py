@@ -22,7 +22,7 @@ def main():
         # add_money = 0
         hand.deal_setup()
         player = hand.player_goes(hand.model.player_hand)
-        print(player)
+        print("Your score is", str(player) + ". Now it's my turn")
         dealer = hand.dealer_deal(
             hand.list_deck,
             hand.deck.deck,
@@ -47,7 +47,6 @@ class OneHand:
     """
 
     def __init__(self):
-        print("in onehand init")
         self.model = Model()
         self.view = View()
         self.controller = Controller()
@@ -222,7 +221,7 @@ class OneHand:
         win = False
         payout = 0
         player_bust = player_hand > 21
-        print("PLAYER HAND IN EVAL HAND", player_hand)
+        # print("PLAYER HAND IN EVAL HAND", player_hand)
         dealer_bust = dealer_hand > 21
 
         while True:
@@ -305,18 +304,6 @@ class OneHand:
         if evaluation[3]:
             print("I dislike you mildly.")
         return evaluation[4] * self.model.player_bet
-
-
-class SplitHand(OneHand):
-    """
-    Modifies the OneHand class in the case of a hand needing to be split.
-    """
-
-    def __init__(self):
-        """
-        Establishes that one card is dealt, sets up variables.
-        """
-        self.num_cards = 1
 
 
 if __name__ == "__main__":

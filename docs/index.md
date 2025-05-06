@@ -1,6 +1,5 @@
 # Don't have cards? Still want to play blackjack?
 Now you can play blackjack at home, right from your computer!* No stress, no risk, only fun :)  
-*with (maybe) a little psychological manipulation...
 
 
 ## Key features:
@@ -11,13 +10,13 @@ Now you can play blackjack at home, right from your computer!* No stress, no ris
 - MIGHT manipulate your gameplay with some targeted commentary
 
 Simple interface with keyboard based input.
-![example gameplay](example_gameplay "Example gameplay")  
+![demo gameplay](demo_gameplay.png "Example gameplay")  
 ## [INSERT VIDEO HERE]
 
 Ready to play? Check out the setup instructions [here](/README.md):
 
 
 About the creators:  
-Jo: likes blackjack, enjoys losing money  
+Jo: likes blackjack, keeps mysteriously losing money  
 Ivry: calls himself the Big Cheese, but is lactose intolerant  
 Althea: likes cheesecake and didn't realize how much until the cravings started
