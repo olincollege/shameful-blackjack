@@ -12,6 +12,9 @@ class Model:
 
     def __init__(self):
         self.player_hand = []
+        self.split_1 = []
+        self.split_2 = []
+        self.split_3 = []
         self.dealer_hand = []
         self.player_bet = 0
         self.player_bankroll = 500

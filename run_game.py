@@ -19,9 +19,10 @@ def main():
 
     while want_to_continue and has_money:
         hand.model.player_bankroll += add_money
-        add_money = 0
+        # add_money = 0
         hand.deal_setup()
         player = hand.player_goes(hand.model.player_hand)
+        print(player)
         dealer = hand.dealer_deal(
             hand.list_deck,
             hand.deck.deck,
@@ -29,7 +30,8 @@ def main():
             hand.model.dealer_hand,
         )
         addition = hand.finish_hand(hand.eval_hand(dealer, player))
-        add_money += addition
+        # add_money += addition
+        hand.model.player_bankroll += addition
         has_money = hand.model.player_bankroll > 0
         want_to_continue = hand.controller.ask_want_to_continue()
         hand.deck._available_deck = hand.deck.deck
@@ -70,7 +72,7 @@ class OneHand:
         self.model.deal_dealer(self.list_deck, self.num_cards)
         self.num_cards += 1
         print(f"Your cards: {self.model.player_hand}")
-        print(f"My Card (That you can see): {self.model.dealer_hand[0]}")
+        print(f"My face-up card: {self.model.dealer_hand[0]}")
 
     def player_goes(self, hand):
         """
@@ -90,9 +92,9 @@ class OneHand:
         )
 
         if checks_post_deal[0]:  # Block for if the player doubles down
-            print(self.model)
+            # print(self.model)
             doubler = self.model.player_bet
-            print("HELLO!!", doubler)
+            # print("HELLO!!", doubler)
             self.model.set_bet(2 * doubler)
             print("Your bet is doubled and you get one additional card")
             self.model.deal_player(self.list_deck, self.num_cards)
@@ -101,12 +103,33 @@ class OneHand:
                 self.deck.deck, self.model.player_hand
             )
 
+        if checks_post_deal[1]:  # splitting....
+            self.model.split_1 = self.model.player_hand.pop(1)
+            while self.controller.ask_hit_or_stay():
+                self.model.deal_player(self.list_deck, self.num_cards)
+                self.num_cards += 1
+                player_score_loop = self.model.un_double_score(
+                    self.model.check_score(
+                        self.deck.deck, self.model.player_hand
+                    )
+                )
+                print(
+                    "Your"
+                    " cards:"
+                    f" {self.view.show_cards(self.deck.deck, self.model.player_hand)}"
+                )
+                if player_score_loop == 21:
+                    return 21
+                if player_score_loop > 21:
+                    return player_score_loop
+                print("Your score is", player_score_loop)
+
         if checks_post_deal[2]:  # block for if the player takes insurance
             self.is_insurance = True
 
         draft_score, other_score = self.model.check_score(self.deck.deck, hand)
         player_score = self.model.un_double_score([draft_score, other_score])
-        print("PLAYER SCORE IN PLAYER_GOES", player_score)
+        print("Your current score is", player_score)
         if player_score == 21:
             return 21
         while self.controller.ask_hit_or_stay():
@@ -114,9 +137,6 @@ class OneHand:
             self.num_cards += 1
             player_score_loop = self.model.un_double_score(
                 self.model.check_score(self.deck.deck, self.model.player_hand)
-            )
-            print(
-                "PLAYER SCORE IN PLAYER_GOES start of loop", player_score_loop
             )
             print(
                 "Your"
@@ -127,7 +147,13 @@ class OneHand:
                 return 21
             if player_score_loop > 21:
                 return player_score_loop
-            print("PLAYER SCORE IN PLAYER_GOES end of loop", player_score_loop)
+            print("Your score is", player_score_loop)
+        print(
+            "Your score is currently",
+            self.model.un_double_score(
+                self.model.check_score(self.deck.deck, self.model.player_hand)
+            ),
+        )
         return self.model.un_double_score(
             self.model.check_score(self.deck.deck, self.model.player_hand)
         )
@@ -194,8 +220,11 @@ class OneHand:
         win = False
         payout = 0
         player_bust = player_hand > 21
+        print("PLAYER HAND IN EVAL HAND", player_hand)
         dealer_bust = dealer_hand > 21
         if not dealer_bust and not player_bust and player_hand == dealer_hand:
+            push = True
+        if dealer_bust and player_bust:
             push = True
         if not dealer_bust and not player_bust and player_hand > dealer_hand:
             win = True
@@ -240,7 +269,7 @@ class OneHand:
             print("21 - well played! Here is your bet and some extra.")
         if evaluation[3]:
             print("I dislike you mildly.")
-        return self.model.player_bet + evaluation[4] * self.model.player_bet
+        return evaluation[4] * self.model.player_bet
 
 
 class SplitHand(OneHand):
